@@ -6,7 +6,6 @@ Public Function NbuTodayCurrency(currCode As String, volatileArg As Variant) As 
 End Function
 
 Public Function GetNbuCurrency(currCode As String, selectedDate As Date) As Variant 'decimal
-    Dim currItem As ExchengeRateItem
     Dim col As Collection
     Set col = GetCurrency(selectedDate)
     
@@ -27,11 +26,14 @@ Public Function GetNbuCurrency(currCode As String, selectedDate As Date) As Vari
         Dim errText As String
         errText = "Not found by currency code " & currCode & " on " & selectedDate & "!"
         Debug.Print errText
-        Err.Raise 555, Description:=errText
+        Exit Function
+        'If you want to have #VALUE! error on invalid currency code, _
+         remove "Exit Function" call and uncomment next line with "Err.Raise"
+         
+        'Err.Raise 555, Description:=errText
     End If
     
-    Set currItem = col.Item(col.Count)
-    GetNbuCurrency = foundItem.Amount * foundItem.Units ' уточнить насчёт единиц измерения
+    GetNbuCurrency = foundItem.Amount / foundItem.Units
     
     Debug.Print "Currency " & currCode & " loaded on " & selectedDate & ", value is " + CStr(foundItem.Amount)
 End Function
@@ -41,7 +43,7 @@ Private Sub TestCurrLoad()
     Set col = GetCurrency(#12/31/2019#)
     
     Dim v As Variant
-    v = GetNbuCurrency("USD", #12/31/2019#, Now)
+    v = GetNbuCurrency("USD", #12/31/2019#)
     Debug.Assert v = CDec(23.6862)
     
     Stop
