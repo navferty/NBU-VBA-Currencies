@@ -1,7 +1,7 @@
 # NBU-VBA-Currencies
 Load NBU currencies in Excel (from bank.gov.ua)
 
-The macro allowes to load currency to Excel worksheet. It can be used directly in formulas such as:
+The macro allows to load currency to Excel worksheet. It can be used directly in formulas such as:
 
 `=GetNbuCurrency("RUB";"5/31/2020")`
 
