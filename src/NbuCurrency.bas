@@ -65,7 +65,7 @@ Private Function GetCurrency(currencyDate As Date) As Collection
             .Amount = ParseDecimal(recordItem.SelectSingleNode("Amount").Text)
             .CurrencyCode = CLng(recordItem.SelectSingleNode("CurrencyCode").Text)
             .CurrencyCodeL = recordItem.SelectSingleNode("CurrencyCodeL").Text
-            .StartDate = CDate(recordItem.SelectSingleNode("StartDate").Text)
+            .StartDate = ParseDateDDMMYYYY(recordItem.SelectSingleNode("StartDate").Text)
             .TimeSign = recordItem.SelectSingleNode("TimeSign").Text
             .Units = CLng(recordItem.SelectSingleNode("Units").Text)
         End With
@@ -74,6 +74,14 @@ Private Function GetCurrency(currencyDate As Date) As Collection
     
     Set GetCurrency = col
 
+End Function
+
+Private Function ParseDateDDMMYYYY(inputDate As String) As Date
+    Dim splitted() As String
+    splitted = Split(inputDate, ".")
+    If (UBound(splitted) = 2) Then
+        ParseDateDDMMYYYY = DateSerial(splitted(2), splitted(1), splitted(0))
+    End If
 End Function
 
 Private Function RequestGetXml(currencyDate As Date) As DOMDocument60
